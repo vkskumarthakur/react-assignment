@@ -9,7 +9,7 @@ const Register = () => {
     email: "",
     name: "",
     password: "",
-    retypePassword: "",
+    confirmPassword: "",
     otp: "",
   });
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (form.password !== form.retypePassword) {
+    if (form.password !== form.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
@@ -31,30 +31,29 @@ const Register = () => {
 
   return (
     <div
-      className="flex rounded-md bg-white mx-auto w-[80%]"
-      style={{ minHeight: "calc(100vh - 1.25rem - 1.25rem)" }}
+      className="flex rounded-2xl bg-[#232323] mx-auto md:w-[70%] overflow-hidden mt-4"
+      style={{ minHeight: "calc(100vh - 2.25rem - 2.25rem)" }}
     >
-      <div className=" flex-1">
+      <div className="hidden md:block flex-1">
         <img
-          src="https://images.pexels.com/photos/2882566/pexels-photo-2882566.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src="https://images.unsplash.com/photo-1447703693928-9cd89c8d3ac5?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           className="h-full w-full object-cover"
         />
       </div>
       <div className="flex flex-col gap-3 flex-1 p-3 items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-3 w-[80%] mx-auto"
+          className="flex flex-col gap-3 w-[75%] mx-auto"
         >
-          <h2 className="text-center font-bold text-2xl text-blue-500">
-            Register User
-          </h2>
+          <h2 className="font-bold text-2xl text-white">Create an Account</h2>
+          <p className="text-[#646464]">Hey there Register and get started.</p>
           <input
             type="text"
-            name="phone"
-            placeholder="Phone"
+            name="name"
+            placeholder="Full Name"
             onChange={handleChange}
             required
-            className="p-2 outline-none border-b-[1px] border-b-blue-500"
+            className="py-1 px-3 outline-none bg-[#323232] text-white"
           />
           <input
             type="email"
@@ -62,15 +61,15 @@ const Register = () => {
             placeholder="Email"
             onChange={handleChange}
             required
-            className="p-2 outline-none border-b-[1px] border-b-blue-500"
+            className="py-1 px-3 outline-none bg-[#323232] text-white"
           />
           <input
             type="text"
-            name="name"
-            placeholder="Name"
+            name="phone"
+            placeholder="Phone"
             onChange={handleChange}
             required
-            className="p-2 outline-none border-b-[1px] border-b-blue-500"
+            className="py-1 px-3 outline-none bg-[#323232] text-white"
           />
           <input
             type="password"
@@ -78,34 +77,34 @@ const Register = () => {
             placeholder="Password"
             onChange={handleChange}
             required
-            className="p-2 outline-none border-b-[1px] border-b-blue-500"
+            className="py-1 px-3 outline-none bg-[#323232] text-white"
           />
           <input
             type="password"
-            name="retypePassword"
-            placeholder="Re-type Password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
             onChange={handleChange}
             required
-            className="p-2 outline-none border-b-[1px] border-b-blue-500"
+            className="py-1 px-3 outline-none bg-[#323232] text-white"
           />
-          <input
+          {/* <input
             type="text"
             name="otp"
             placeholder="OTP"
             onChange={handleChange}
             required
-            className="p-2 outline-none border-b-[1px] border-b-blue-300"
-          />
+            className="py-1 px-3 outline-none bg-[#323232] text-white"
+          /> */}
           <button
             type="submit"
-            className="bg-blue-500 p-2 text-white rounded-xl"
+            className="bg-[#19594D] py-1 px-3 text-white rounded-md"
           >
             Register
           </button>
-          <span className="text-center">
-            Don't have an account?{" "}
-            <Link to="/">
-              <span className="text-blue-500 ">Sign Up</span>
+          <span className="text-[#646464]">
+            Already Registered?
+            <Link to="/login">
+              <span className="text-white"> Login</span>
             </Link>
           </span>
         </form>
