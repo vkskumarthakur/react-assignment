@@ -43,7 +43,7 @@ const Register = () => {
       <div className="flex flex-col gap-3 flex-1 p-3 items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-3 w-[75%] mx-auto"
+          className="flex flex-col gap-3 w-[90%] md:w-[70%] mx-auto"
         >
           <h2 className="font-bold text-2xl text-white">Create an Account</h2>
           <p className="text-[#646464]">Hey there Register and get started.</p>
