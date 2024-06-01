@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -21,11 +23,13 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
-    // Placeholder for registration logic
-    console.log("Registering user:", form);
+    // Save form data to local storage
+    localStorage.setItem("userData", JSON.stringify(form));
+    console.log("User registered:", form);
+    toast.success("User Registered");
     navigate("/login");
   };
 
@@ -38,6 +42,7 @@ const Register = () => {
         <img
           src="https://images.unsplash.com/photo-1447703693928-9cd89c8d3ac5?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           className="h-full w-full object-cover"
+          alt="Registration Background"
         />
       </div>
       <div className="flex flex-col gap-3 flex-1 p-3 items-center justify-center">
@@ -46,7 +51,7 @@ const Register = () => {
           className="flex flex-col gap-3 w-[90%] md:w-[70%] mx-auto"
         >
           <h2 className="font-bold text-2xl text-white">Create an Account</h2>
-          <p className="text-[#646464]">Hey there Register and get started.</p>
+          <p className="text-[#646464]">Register and get started.</p>
           <input
             type="text"
             name="name"
@@ -109,6 +114,7 @@ const Register = () => {
           </span>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
