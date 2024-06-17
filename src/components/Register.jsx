@@ -30,13 +30,15 @@ const Register = () => {
     localStorage.setItem("userData", JSON.stringify(form));
     console.log("User registered:", form);
     toast.success("User Registered");
-    navigate("/login");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
   };
 
   return (
     <div
-      className="flex rounded-2xl bg-[#232323] mx-auto md:w-[70%] overflow-hidden mt-4"
-      style={{ minHeight: "calc(100vh - 2.25rem - 2.25rem)" }}
+      className="flex rounded-2xl bg-[#232323] mx-auto md:w-[70%] overflow-hidden my-4"
+      style={{ minHeight: "calc(100vh - 56px - 32px - 32px)" }}
     >
       <div className="hidden md:block flex-1">
         <img
@@ -102,7 +104,7 @@ const Register = () => {
           /> */}
           <button
             type="submit"
-            className="bg-[#19594D] py-1 px-3 text-white rounded-md"
+            className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
           >
             Register
           </button>

@@ -5,7 +5,7 @@ const WelcomePage = () => {
   return (
     <div
       className="flex rounded-2xl bg-[transparent] mx-auto md:w-[70%] overflow-hidden mt-4 px-3"
-      style={{ minHeight: "calc(100vh - 2.25rem - 2.25rem)" }}
+      style={{ minHeight: "calc(100vh - 56px - 32px - 32px)" }}
     >
       <div className="min-h-full w-full flex flex-col items-center justify-center">
         <h2 className="font-bold text-2xl text-white text-center">
@@ -16,9 +16,24 @@ const WelcomePage = () => {
           <Link to="/login">
             <button
               type="submit"
-              className="bg-[#19594D] py-2 px-3 text-white rounded-md mt-3"
+              className="bg-[#19594D] py-1 px-5 text-white rounded-sm mt-3"
             >
-              Click To Start
+              {/* <span className="inline">Start </span> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-move-right"
+              >
+                <path d="M18 8L22 12L18 16" />
+                <path d="M2 12H22" />
+              </svg>
             </button>
           </Link>
         </div>

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   const [user, setUser] = useState({
     photo: "",
-    name: "vikas",
+    name: "",
     email: "john@example.com",
     phone: "1234567890",
     pastExperience: "Software Developer at XYZ",
@@ -22,14 +22,14 @@ const Dashboard = () => {
 
   return (
     <div className="">
-      <div className="flex items-center justify-end gap-5">
+      <div className="bg-[#262626] py-3 px-5 flex items-center justify-end gap-3 shadow-md">
         <h2 className="text-white">
           <span className="text-[#ffffff] font-bold text-xl">{user.name}</span>
         </h2>
         <Link to="/">
           <button
             type="button"
-            className="bg-[#19594D] py-1 px-3 text-white rounded-md"
+            className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
           >
             Logout &nbsp;
             <svg

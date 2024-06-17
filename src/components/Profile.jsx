@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Profile = ({ user, setUser }) => {
-  const [form, setForm] = useState(user);
+const Profile = ({ setUser }) => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    pastExperience: "",
+    skillSets: "",
+    education: "",
+    photo: null,
+  });
   const [preview, setPreview] = useState(null);
   const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+    if (storedUserData) {
+      setForm({
+        ...form,
+        name: storedUserData.name || "",
+        email: storedUserData.email || "",
+        phone: storedUserData.phone || "",
+        // Add other fields as needed, ensuring they are part of storedUserData
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +54,13 @@ const Profile = ({ user, setUser }) => {
     setUser(form);
     toast.success("Profile updated successfully");
     setEditMode(false); // Exit edit mode after updating profile
+
+    // Save updated data to local storage
+    const updatedUserData = {
+      ...form,
+      photo: form.photo ? form.photo.name : null, // Store the photo name or handle it accordingly
+    };
+    localStorage.setItem("userData", JSON.stringify(updatedUserData));
   };
 
   const toggleEditMode = () => {
@@ -41,8 +69,8 @@ const Profile = ({ user, setUser }) => {
 
   return (
     <div
-      className="flex rounded-2xl bg-[#232323] mx-auto md:w-[50%] overflow-hidden mt-4 px-3"
-      style={{ minHeight: "calc(100vh - 2.25rem - 2.25rem - 2.25rem)" }}
+      className="flex rounded-2xl bg-[#232323] mx-auto md:w-[50%] overflow-hidden my-4 px-3"
+      style={{ minHeight: "calc(100vh - 56px - 32px - 32px)" }}
     >
       <form
         onSubmit={handleSubmit}
@@ -153,7 +181,7 @@ const Profile = ({ user, setUser }) => {
         <button
           type="button"
           onClick={toggleEditMode}
-          className={`bg-[#19594D] py-1 px-3 text-white rounded-md ${
+          className={`bg-[#19594D] py-1 px-3 text-white rounded-sm ${
             editMode ? "hidden" : ""
           }`}
         >
@@ -161,7 +189,7 @@ const Profile = ({ user, setUser }) => {
         </button>
         <button
           type="submit"
-          className={`bg-[#19594D] py-1 px-3 text-white rounded-md ${
+          className={`bg-[#19594D] py-1 px-3 text-white rounded-sm ${
             !editMode ? "hidden" : ""
           }`}
         >

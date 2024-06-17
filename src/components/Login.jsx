@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -49,7 +51,11 @@ const Login = () => {
 
     // If credentials are correct, navigate to dashboard
     console.log("User logged in:", form);
-    navigate("/dashboard");
+    toast.success("User Logged In");
+
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 1000);
   };
 
   const handleOtpLogin = () => {
@@ -66,8 +72,8 @@ const Login = () => {
 
   return (
     <div
-      className="flex rounded-2xl bg-[#232323] mx-auto md:w-[70%] overflow-hidden mt-4"
-      style={{ minHeight: "calc(100vh - 2.25rem - 2.25rem)" }}
+      className="flex rounded-2xl bg-[#232323] mx-auto md:w-[70%] overflow-hidden my-4"
+      style={{ minHeight: "calc(100vh - 56px - 32px - 32px)" }}
     >
       <div className="hidden md:block flex-1">
         <img
@@ -81,7 +87,7 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="flex flex-col gap-3 w-[90%] md:w-[70%] mx-auto"
         >
-          <h2 className="font-bold text-2xl text-white">
+          <h2 className="font-bold text-2xl text-white ">
             Login to Your Account
           </h2>
           {error && <p className="text-red-500">{error}</p>}
@@ -108,7 +114,7 @@ const Login = () => {
               className="py-1 px-3 outline-none bg-[#323232] text-white"
             />
           )}
-          {viaOtp && (
+          {!viaOtp && viaOtp && (
             <input
               type="text"
               name="otp"
@@ -120,9 +126,9 @@ const Login = () => {
           )}
           <button
             type="submit"
-            className="bg-[#19594D] py-1 px-3 text-white rounded-md"
+            className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
           >
-            {viaOtp ? "Verify OTP" : "Login"}
+            {viaOtp ? "Send OTP" : "Login"}
           </button>
           {!viaOtp && (
             <p onClick={handleOtpLogin} className="cursor-pointer text-white">
@@ -145,6 +151,7 @@ const Login = () => {
           </span>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
