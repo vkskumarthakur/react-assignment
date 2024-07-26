@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -18,44 +19,27 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Retrieve user data from local storage
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    const userData = await axios.post("http://localhost:5000/api/auth/login",form)
     if (!userData) {
       setError("User not registered");
       return;
     }
 
     // Check if entered phone matches with stored phone
-    if (form.phone !== userData.phone) {
-      setError("Phone number not recognized");
-      return;
-    }
-
-    // If logging in via OTP
-    if (form.otp !== "") {
-      // Check if entered OTP matches with stored OTP (if any)
-      if (form.otp !== userData.otp) {
-        setError("Invalid OTP");
-        return;
-      }
-    } else {
-      // If logging in via password
-      // Check if entered password matches with stored password
-      if (form.password !== userData.password) {
-        setError("Incorrect password");
-        return;
-      }
-    }
+    
 
     // If credentials are correct, navigate to dashboard
     console.log("User logged in:", form);
     toast.success("User Logged In");
+    navigate("/dashboard");
 
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 1000);
+
+    // setTimeout(() => {
+    //   navigate("/dashboard");
+    // }, 1000);
   };
 
   const handleOtpLogin = () => {

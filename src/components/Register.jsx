@@ -4,15 +4,15 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios"; // Import Axios
 
 const Register = () => {
   const [form, setForm] = useState({
     phone: "",
     email: "",
-    name: "",
+    username: "",
     password: "",
     confirmPassword: "",
-    otp: "",
   });
   const navigate = useNavigate();
 
@@ -20,19 +20,25 @@ const Register = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
-    // Save form data to local storage
-    localStorage.setItem("userData", JSON.stringify(form));
-    console.log("User registered:", form);
-    toast.success("User Registered");
-    setTimeout(() => {
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/register", form);
+      console.log("User registered:", response.data);
+      toast.success("User Registered");
       navigate("/login");
-    }, 1000);
+      // setTimeout(() => {
+      //   navigate("/login");
+      // }, 1000);
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error(error?.message || "Registration failed. Please try again.");
+    }
   };
 
   return (
@@ -56,7 +62,7 @@ const Register = () => {
           <p className="text-[#646464]">Register and get started.</p>
           <input
             type="text"
-            name="name"
+            name="username"
             placeholder="Full Name"
             onChange={handleChange}
             required
@@ -94,14 +100,6 @@ const Register = () => {
             required
             className="py-1 px-3 outline-none bg-[#323232] text-white"
           />
-          {/* <input
-            type="text"
-            name="otp"
-            placeholder="OTP"
-            onChange={handleChange}
-            required
-            className="py-1 px-3 outline-none bg-[#323232] text-white"
-          /> */}
           <button
             type="submit"
             className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
