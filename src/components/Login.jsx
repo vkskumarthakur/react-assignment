@@ -19,28 +19,26 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Retrieve user data from local storage
-    const userData = await axios.post("http://localhost:5000/api/auth/login",form)
-    if (!userData) {
-      setError("User not registered");
-      return;
+    try {
+      const userData = await axios.post("http://localhost:5000/api/auth/login", form);
+      if (userData.data?.user) {
+        const users = JSON.stringify(userData.data.user)
+        localStorage.setItem("user", users);
+        console.log("User logged in:", userData.data);
+        toast.success("User Logged In");
+        setTimeout(() => {
+          navigate("/Profile");
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      setError("Invalid credentials");
+      // toast.error("Invalid credentials");
     }
-
-    // Check if entered phone matches with stored phone
-    
-
-    // If credentials are correct, navigate to dashboard
-    console.log("User logged in:", form);
-    toast.success("User Logged In");
-    navigate("/dashboard");
-
-
-    // setTimeout(() => {
-    //   navigate("/dashboard");
-    // }, 1000);
   };
+  
 
   const handleOtpLogin = () => {
     setForm({ ...form, password: "" }); // Clear password field
@@ -61,7 +59,7 @@ const Login = () => {
     >
       <div className="hidden md:block flex-1">
         <img
-          src="https://images.unsplash.com/photo-1447703693928-9cd89c8d3ac5?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://img.freepik.com/free-vector/online-workshop-abstract-concept-vector-illustration-elearning-workshop-collaborative-activity-get-certificate-online-free-online-education-selfisolation-master-class-abstract-metaphor_335657-5858.jpg?t=st=1722191619~exp=1722195219~hmac=73e20429e6fa8772d5513ac100ac6b1771b19d6457897d2e4b9a39eece149b77&w=740"
           className="h-full w-full object-cover"
           alt="Login Background"
         />

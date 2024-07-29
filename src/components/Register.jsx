@@ -8,11 +8,12 @@ import axios from "axios"; // Import Axios
 
 const Register = () => {
   const [form, setForm] = useState({
-    phone: "",
-    email: "",
     username: "",
+    email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
+    
   });
   const navigate = useNavigate();
 
@@ -31,10 +32,10 @@ const Register = () => {
       const response = await axios.post("http://localhost:5000/api/auth/register", form);
       console.log("User registered:", response.data);
       toast.success("User Registered");
-      navigate("/login");
-      // setTimeout(() => {
-      //   navigate("/login");
-      // }, 1000);
+      // navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
       console.error("Registration error:", error);
       toast.error(error?.message || "Registration failed. Please try again.");
@@ -48,7 +49,7 @@ const Register = () => {
     >
       <div className="hidden md:block flex-1">
         <img
-          src="https://images.unsplash.com/photo-1447703693928-9cd89c8d3ac5?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://img.freepik.com/free-vector/online-workshop-abstract-concept-vector-illustration-digital-workshop-online-topic-course-distance-web-learning-group-video-call-webcam-laptop-screen-educational-webinar-abstract-metaphor_335657-5878.jpg?t=st=1722191745~exp=1722195345~hmac=7000e889375037f9c952c158d1f5b53d3a882fea6e2247e0bb1e3d178b1f2da7&w=740"
           className="h-full w-full object-cover"
           alt="Registration Background"
         />
