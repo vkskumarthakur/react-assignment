@@ -22,9 +22,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userData = await axios.post("http://localhost:5000/api/auth/login", form);
+      const userData = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        form
+      );
       if (userData.data?.user) {
-        const users = JSON.stringify(userData.data.user)
+        const users = JSON.stringify(userData.data.user);
         localStorage.setItem("user", users);
         console.log("User logged in:", userData.data);
         toast.success("User Logged In");
@@ -38,12 +41,19 @@ const Login = () => {
       // toast.error("Invalid credentials");
     }
   };
-  
 
-  const handleOtpLogin = () => {
+  const handleOtpLogin = async () => {
     setForm({ ...form, password: "" }); // Clear password field
     setError(""); // Clear previous error message
     setViaOtp(true);
+  };
+
+  const handleSendOtp = async () => {
+    const response = await axios.post(
+      `https://localhost:5000/api/auth/send-otp`,
+      { phone: form?.phone }
+    );
+    console.log(response, "send otp");
   };
 
   const handlePasswordLogin = () => {
@@ -106,12 +116,21 @@ const Login = () => {
               className="py-1 px-3 outline-none bg-[#323232] text-white"
             />
           )}
-          <button
-            type="submit"
-            className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
-          >
-            {viaOtp ? "Send OTP" : "Login"}
-          </button>
+          {viaOtp ? (
+            <button
+              onClick={handleSendOtp}
+              className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
+            >
+              Send OTP
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
+            >
+              Login
+            </button>
+          )}
           {!viaOtp && (
             <p onClick={handleOtpLogin} className="cursor-pointer text-white">
               Login using OTP
