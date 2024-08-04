@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -18,50 +19,41 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Retrieve user data from local storage
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    if (!userData) {
-      setError("User not registered");
-      return;
-    }
-
-    // Check if entered phone matches with stored phone
-    if (form.phone !== userData.phone) {
-      setError("Phone number not recognized");
-      return;
-    }
-
-    // If logging in via OTP
-    if (form.otp !== "") {
-      // Check if entered OTP matches with stored OTP (if any)
-      if (form.otp !== userData.otp) {
-        setError("Invalid OTP");
-        return;
+    try {
+      const userData = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        form
+      );
+      if (userData.data?.user) {
+        const users = JSON.stringify(userData.data.user);
+        localStorage.setItem("user", users);
+        console.log("User logged in:", userData.data);
+        toast.success("User Logged In");
+        setTimeout(() => {
+          navigate("/Profile");
+        }, 1000);
       }
-    } else {
-      // If logging in via password
-      // Check if entered password matches with stored password
-      if (form.password !== userData.password) {
-        setError("Incorrect password");
-        return;
-      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      setError("Invalid credentials");
+      // toast.error("Invalid credentials");
     }
-
-    // If credentials are correct, navigate to dashboard
-    console.log("User logged in:", form);
-    toast.success("User Logged In");
-
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 1000);
   };
 
-  const handleOtpLogin = () => {
+  const handleOtpLogin = async () => {
     setForm({ ...form, password: "" }); // Clear password field
     setError(""); // Clear previous error message
     setViaOtp(true);
+  };
+
+  const handleSendOtp = async () => {
+    const response = await axios.post(
+      `https://localhost:5000/api/auth/send-otp`,
+      { phone: form?.phone }
+    );
+    console.log(response, "send otp");
   };
 
   const handlePasswordLogin = () => {
@@ -77,7 +69,7 @@ const Login = () => {
     >
       <div className="hidden md:block flex-1">
         <img
-          src="https://images.unsplash.com/photo-1447703693928-9cd89c8d3ac5?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://img.freepik.com/free-vector/online-workshop-abstract-concept-vector-illustration-elearning-workshop-collaborative-activity-get-certificate-online-free-online-education-selfisolation-master-class-abstract-metaphor_335657-5858.jpg?t=st=1722191619~exp=1722195219~hmac=73e20429e6fa8772d5513ac100ac6b1771b19d6457897d2e4b9a39eece149b77&w=740"
           className="h-full w-full object-cover"
           alt="Login Background"
         />
@@ -124,12 +116,21 @@ const Login = () => {
               className="py-1 px-3 outline-none bg-[#323232] text-white"
             />
           )}
-          <button
-            type="submit"
-            className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
-          >
-            {viaOtp ? "Send OTP" : "Login"}
-          </button>
+          {viaOtp ? (
+            <button
+              onClick={handleSendOtp}
+              className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
+            >
+              Send OTP
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
+            >
+              Login
+            </button>
+          )}
           {!viaOtp && (
             <p onClick={handleOtpLogin} className="cursor-pointer text-white">
               Login using OTP

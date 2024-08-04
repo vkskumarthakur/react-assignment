@@ -4,15 +4,16 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios"; // Import Axios
 
 const Register = () => {
   const [form, setForm] = useState({
-    phone: "",
+    username: "",
     email: "",
-    name: "",
+    phone: "",
     password: "",
     confirmPassword: "",
-    otp: "",
+    
   });
   const navigate = useNavigate();
 
@@ -20,19 +21,25 @@ const Register = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
-    // Save form data to local storage
-    localStorage.setItem("userData", JSON.stringify(form));
-    console.log("User registered:", form);
-    toast.success("User Registered");
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/register", form);
+      console.log("User registered:", response.data);
+      toast.success("User Registered");
+      // navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error(error?.message || "Registration failed. Please try again.");
+    }
   };
 
   return (
@@ -42,7 +49,7 @@ const Register = () => {
     >
       <div className="hidden md:block flex-1">
         <img
-          src="https://images.unsplash.com/photo-1447703693928-9cd89c8d3ac5?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://img.freepik.com/free-vector/online-workshop-abstract-concept-vector-illustration-digital-workshop-online-topic-course-distance-web-learning-group-video-call-webcam-laptop-screen-educational-webinar-abstract-metaphor_335657-5878.jpg?t=st=1722191745~exp=1722195345~hmac=7000e889375037f9c952c158d1f5b53d3a882fea6e2247e0bb1e3d178b1f2da7&w=740"
           className="h-full w-full object-cover"
           alt="Registration Background"
         />
@@ -56,7 +63,7 @@ const Register = () => {
           <p className="text-[#646464]">Register and get started.</p>
           <input
             type="text"
-            name="name"
+            name="username"
             placeholder="Full Name"
             onChange={handleChange}
             required
@@ -94,14 +101,6 @@ const Register = () => {
             required
             className="py-1 px-3 outline-none bg-[#323232] text-white"
           />
-          {/* <input
-            type="text"
-            name="otp"
-            placeholder="OTP"
-            onChange={handleChange}
-            required
-            className="py-1 px-3 outline-none bg-[#323232] text-white"
-          /> */}
           <button
             type="submit"
             className="bg-[#19594D] py-1 px-3 text-white rounded-sm"
